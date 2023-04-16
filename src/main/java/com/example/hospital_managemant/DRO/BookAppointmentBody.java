@@ -5,7 +5,7 @@ import java.time.LocalDateTime;
 public class BookAppointmentBody {
     private Long doctorId;
     private String date;
-    private String time;
+
     private Long patient_id;
 
     public Long getPatient_id() {
@@ -20,7 +20,12 @@ public class BookAppointmentBody {
         return date;
     }
 
-    public String getTime() {
-        return time;
+    @Override
+    public String toString() {
+        return "BookAppointmentBody{" +
+                "doctorId=" + doctorId +
+                ", date='" + date + '\'' +
+                ", patient_id=" + patient_id +
+                '}';
     }
 }

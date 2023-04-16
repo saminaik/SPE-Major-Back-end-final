@@ -15,6 +15,7 @@ import java.util.List;
 
 @RequestMapping("/api/admin")
 @RestController
+@CrossOrigin("http://localhost:3000")
 public class AdminController {
     private final DoctorService doctorService;
     private final AdminService adminService;

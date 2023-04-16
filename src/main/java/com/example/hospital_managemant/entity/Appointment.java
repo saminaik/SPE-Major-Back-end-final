@@ -1,5 +1,6 @@
 package com.example.hospital_managemant.entity;
 import com.example.hospital_managemant.enums.AppointmentStatus;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -9,7 +10,10 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "appointments")
+@Table(name = "appointments",
+              uniqueConstraints =
+              @UniqueConstraint(name = "unique-appoinments",columnNames = {"patient_id","doctor_id","date"})
+)
 public class Appointment {
 
     @Id
@@ -18,22 +22,23 @@ public class Appointment {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "patient_id", nullable = false)
+    @JsonBackReference
     private Patient patient;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "doctor_id", nullable = false)
+    @JsonBackReference
     private Doctor doctor;
 
     @Column(name = "date")
     private String date;
-    @Column(name = "time")
-    private String time;
+
     @Enumerated(EnumType.STRING)
     private AppointmentStatus status;
 
-    public Appointment(String date, String time, AppointmentStatus status) {
+    public Appointment(String date, AppointmentStatus status) {
         this.date = date;
-        this.time = time;
+
         this.status = status;
     }
 
@@ -41,6 +46,25 @@ public class Appointment {
 
     }
 
+    public Long getId() {
+        return id;
+    }
 
-    // getters and setters
+    public Patient getPatient() {
+        return patient;
+    }
+
+    public Doctor getDoctor() {
+        return doctor;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public AppointmentStatus getStatus() {
+        return status;
+    }
+
+// getters and setters
 }

@@ -7,17 +7,19 @@ import com.example.hospital_managemant.entity.Doctor;
 import com.example.hospital_managemant.entity.Patient;
 import com.example.hospital_managemant.entity.Query;
 import com.example.hospital_managemant.enums.AppointmentStatus;
-import com.example.hospital_managemant.exception.ResourceNotFoundException;
 import com.example.hospital_managemant.repository.AppointmentRepository;
 import com.example.hospital_managemant.repository.DoctorRepository;
 import com.example.hospital_managemant.repository.PatientRepository;
 import com.example.hospital_managemant.repository.QueryRepository;
 import com.example.hospital_managemant.service.PatientService;
 import jakarta.transaction.Transactional;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -62,24 +64,25 @@ public class PatientServiceImpl implements PatientService {
 
 
 
-    @Override
-    public Appointment bookAppointment(Long patientId, Appointment appointment) {
-        // Find patient by ID
-        Patient patient = patientRepository.findById(patientId)
-                .orElseThrow(() -> new ResourceNotFoundException("Patient",
-                        "id",
-                        patientId));
-
-        // Assign patient to appointment
-        appointment.setPatient(patient);
-
-        // Save appointment
-        return appointmentRepository.save(appointment);
-    }
+//    @Override
+//    public Appointment bookAppointment(Long patientId, Appointment appointment) {
+//        // Find patient by ID
+//        Patient patient = patientRepository.findById(patientId)
+//                .orElseThrow(() -> new ResourceNotFoundException("Patient",
+//                        "id",
+//                        patientId));
+//
+//        // Assign patient to appointment
+//        appointment.setPatient(patient);
+//
+//        // Save appointment
+//        return appointmentRepository.save(appointment);
+//    }
 
     @Override
     public boolean addQuery(PatientQueryBody patientQueryBody) {
         try {
+            System.out.println(patientQueryBody.getPatinet_id());
             Patient patient = patientRepository.findById(patientQueryBody.getPatinet_id()).get();
             Query query = new Query(patientQueryBody.getSubject(),
                     patientQueryBody.getQuery(),
@@ -88,35 +91,54 @@ public class PatientServiceImpl implements PatientService {
             queryRepository.save(query);
             return true;
         }catch (Exception e){
-            System.out.println(e);
+            System.out.println("hello hello hello");
+            System.out.println(e.getMessage());
         }
         return false;
     }
 
     @Override
-    public boolean bookAppointment(BookAppointmentBody bookAppointmentBody) {
+    public ResponseEntity<?> bookAppointment(BookAppointmentBody bookAppointmentBody) {
         try
         {
-
+            System.out.println(bookAppointmentBody);
             Patient patient=patientRepository.findById(bookAppointmentBody.getPatient_id()).get();
 
             Doctor doctor=doctorRepository.findById(bookAppointmentBody.getDoctorId()).get();
-            System.out.println("asdkjfbakjsfj dsjkfnajsnfja jkandfjabsjkfnw");
+
             AppointmentStatus status = AppointmentStatus.REQUESTED;
 
-            Appointment appointment=new Appointment( bookAppointmentBody.getDate(),bookAppointmentBody.getTime(),status);
+            Appointment appointment=new Appointment( bookAppointmentBody.getDate(),status);
 
-       appointment.setPatient(patient);
-       appointment.setDoctor(doctor);
-       appointmentRepository.save(appointment);
-       return true;
+           appointment.setPatient(patient);
+           appointment.setDoctor(doctor);
+           appointmentRepository.save(appointment);
+
+           return ResponseEntity.ok("Requested");
+
         }
         catch (Exception e){
             System.out.println(e);
-
-
+            return ResponseEntity.badRequest().body("Something went wrong");
         }
-        return false;
+//        return false;
     }
+
+    @Override
+    public  List<Appointment> getAppointment(Long id) {
+       try{
+//           System.out.println(id);
+           return appointmentRepository.findByPatient_Id(id);
+
+//           System.out.println(appoint);
+
+       }
+       catch (Exception e){
+           System.out.println(e.getMessage());
+           return Collections.emptyList();
+       }
+
+    }
+
 
 }

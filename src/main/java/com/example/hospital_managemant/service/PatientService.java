@@ -4,11 +4,10 @@ import com.example.hospital_managemant.DRO.BookAppointmentBody;
 import com.example.hospital_managemant.DRO.PatientQueryBody;
 import com.example.hospital_managemant.entity.Appointment;
 import com.example.hospital_managemant.entity.Patient;
-import com.example.hospital_managemant.entity.Prescription;
-import org.hibernate.query.Query;
+import org.springframework.http.ResponseEntity;
 
-import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 public interface PatientService {
     void registerPatient(Patient patient);
@@ -19,9 +18,11 @@ public interface PatientService {
 
 
 
-    Appointment bookAppointment(Long patientId, Appointment appointment);
+//    Appointment bookAppointment(Long patientId, Appointment appointment);
 
     boolean addQuery(PatientQueryBody patientQueryBody);
 
-    boolean bookAppointment(BookAppointmentBody bookAppointmentBody);
+    ResponseEntity<?> bookAppointment(BookAppointmentBody bookAppointmentBody);
+
+    List<Appointment> getAppointment(Long id);
 }

@@ -32,7 +32,7 @@ public class Appointment {
 
     @Column(name = "date")
     private String date;
-
+   private String patient_name;
     @Enumerated(EnumType.STRING)
     private AppointmentStatus status;
 

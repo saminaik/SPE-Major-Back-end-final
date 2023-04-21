@@ -14,6 +14,8 @@ import java.util.Optional;
 
 @Repository
 public interface AppointmentRepository extends JpaRepository<Appointment, Long> {
+    @Query("select a from Appointment a where a.doctor.id = ?1")
+    List<Appointment> findByDoctor_Id(Long id);
     @Query("select a from Appointment a where a.patient.id = ?1")
     List<Appointment> findByPatient_Id(Long id);
 

@@ -53,7 +53,7 @@ public class PatientController {
         return patientService.bookAppointment(appointment);
     }
 
-@GetMapping("/appointments/{id}")
+@GetMapping("see/appointments/{id}")
     public List<Appointment> getAppointment(@PathVariable Long id){
 
         return patientService.getAppointment(id);

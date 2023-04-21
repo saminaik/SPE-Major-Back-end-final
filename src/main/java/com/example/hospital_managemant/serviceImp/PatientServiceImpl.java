@@ -127,10 +127,10 @@ public class PatientServiceImpl implements PatientService {
     @Override
     public  List<Appointment> getAppointment(Long id) {
        try{
-//           System.out.println(id);
-           return appointmentRepository.findByPatient_Id(id);
 
-//           System.out.println(appoint);
+           List<Appointment> byPatient_id = appointmentRepository.findByPatient_Id(id);
+           return byPatient_id;
+
 
        }
        catch (Exception e){

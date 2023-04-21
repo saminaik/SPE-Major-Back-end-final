@@ -10,19 +10,17 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "prescriptions")
+
 public class Prescription {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
-    private String text;
+    private Long appointmentId;
+    private String dosage;
+    private String medicine;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "appointment_id", referencedColumnName = "id")
-    private Appointment appointment;
 
     // constructors, getters, and setters
 }

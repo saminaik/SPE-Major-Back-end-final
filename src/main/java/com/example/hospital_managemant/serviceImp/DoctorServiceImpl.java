@@ -59,6 +59,7 @@ import java.util.Optional;
             return appointmentRepository.findByDoctor_Id(id);
         }catch (Exception e){
             System.out.println(e.getMessage());
+
         }
         return null;
     }

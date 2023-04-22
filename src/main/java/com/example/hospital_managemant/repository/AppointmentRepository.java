@@ -14,6 +14,11 @@ import java.util.Optional;
 
 @Repository
 public interface AppointmentRepository extends JpaRepository<Appointment, Long> {
+    @Query("select a from Appointment a where a.patient.id = ?1 and a.status = ?2")
+    List<Appointment> findByPatient_IdAndStatus(Long id, AppointmentStatus status);
+    @Query("select a from Appointment a where a.id = ?1 and a.status = ?2")
+    List<Appointment> findByIdAndStatus(Long id, AppointmentStatus status);
+
     @Query("select a from Appointment a where a.doctor.id = ?1")
     List<Appointment> findByDoctor_Id(Long id);
     @Query("select a from Appointment a where a.patient.id = ?1")
@@ -25,4 +30,7 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Long> 
     @Modifying
     @Query("update Appointment a set a.status = ?1 where a.id = ?2")
     int updateStatusById(AppointmentStatus status, Long id);
+
+
+
 }

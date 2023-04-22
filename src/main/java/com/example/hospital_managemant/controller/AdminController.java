@@ -3,6 +3,7 @@ package com.example.hospital_managemant.controller;
 import com.example.hospital_managemant.DTO.PatientReplyBodyBYAdmin;
 import com.example.hospital_managemant.entity.Doctor;
 import com.example.hospital_managemant.entity.Patient;
+import com.example.hospital_managemant.entity.Query;
 import com.example.hospital_managemant.service.AdminService;
 import com.example.hospital_managemant.service.DoctorService;
 import com.example.hospital_managemant.service.PatientService;
@@ -33,7 +34,17 @@ public class AdminController {
             return ResponseEntity.ok("Done!");
         else return ResponseEntity.badRequest().body("not able to post the reponse");
     }
-
+    @PostMapping("/reply-querys/{id}")
+    public ResponseEntity<?> replyQ(@RequestBody String replyText,@PathVariable Long id){
+        boolean b=adminService.adReply(replyText,id);
+        if(b)
+            return ResponseEntity.ok("Done!");
+        else return ResponseEntity.badRequest().body("not able to post the reponse");
+    }
+  @GetMapping("/quries")
+  public List<Query> getquery(){
+        return adminService.getquery();
+  }
 
     @PostMapping("/doctor")
     public void addDoctor(@RequestBody Doctor doctor) {

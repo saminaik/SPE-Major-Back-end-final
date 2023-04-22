@@ -27,6 +27,15 @@ public class Query {
 //    private Admin admin;
 
     private String subject;
+   private String status;
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
 
     @Column(name = "query_text")
     private String queryText;
@@ -34,7 +43,8 @@ public class Query {
     @Column(name = "reply_text")
     private String replyText;
 
-    public Query(String subject, String queryText, String replyText) {
+    public Query(String status,String subject, String queryText, String replyText) {
+        this.status=status;
         this.subject = subject;
         this.queryText = queryText;
         this.replyText = replyText;

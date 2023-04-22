@@ -2,19 +2,16 @@ package com.example.hospital_managemant.serviceImp;
 
 import com.example.hospital_managemant.DRO.BookAppointmentBody;
 import com.example.hospital_managemant.DRO.PatientQueryBody;
-import com.example.hospital_managemant.entity.Appointment;
-import com.example.hospital_managemant.entity.Doctor;
-import com.example.hospital_managemant.entity.Patient;
-import com.example.hospital_managemant.entity.Query;
+import com.example.hospital_managemant.entity.*;
 import com.example.hospital_managemant.enums.AppointmentStatus;
-import com.example.hospital_managemant.repository.AppointmentRepository;
-import com.example.hospital_managemant.repository.DoctorRepository;
-import com.example.hospital_managemant.repository.PatientRepository;
-import com.example.hospital_managemant.repository.QueryRepository;
+import com.example.hospital_managemant.repository.*;
 import com.example.hospital_managemant.service.PatientService;
 import jakarta.transaction.Transactional;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDateTime;
 import java.util.Collections;
@@ -30,6 +27,8 @@ public class PatientServiceImpl implements PatientService {
 
     private final QueryRepository queryRepository;
     private final DoctorRepository doctorRepository;
+    private final PrescriptionRepository prescriptionRepository;
+    private final TreatmentRepository treatmentRepository;
 
     @Override
     public List<Patient> getAllPatients() {
@@ -39,11 +38,15 @@ public class PatientServiceImpl implements PatientService {
 
 
     public PatientServiceImpl(PatientRepository patientRepository, AppointmentRepository appointmentRepository, QueryRepository queryRepository,
-                              DoctorRepository doctorRepository) {
+                              DoctorRepository doctorRepository,
+                              PrescriptionRepository prescriptionRepository,
+                              TreatmentRepository treatmentRepository) {
         this.patientRepository = patientRepository;
         this.appointmentRepository = appointmentRepository;
         this.queryRepository = queryRepository;
         this.doctorRepository = doctorRepository;
+        this.prescriptionRepository = prescriptionRepository;
+        this.treatmentRepository = treatmentRepository;
     }
 
 
@@ -52,42 +55,31 @@ public class PatientServiceImpl implements PatientService {
 
 
     @Override
-    public void registerPatient(Patient patient) {
+    public Patient  registerPatient(Patient patient) {
         // Set registration date
         patient.setRegistrationDate(LocalDateTime.now());
+     try{
+     return    patientRepository.save(patient);
 
-        // Save patient to database
-        patientRepository.save(patient);
+
+     }
+     catch (DataIntegrityViolationException e)
+     {
+         System.out.println(e.getMessage());
+         throw new ResponseStatusException(HttpStatus.CONFLICT, "Email already exists", e);
+     }
     }
-
-//asking the query
-
-
-
-//    @Override
-//    public Appointment bookAppointment(Long patientId, Appointment appointment) {
-//        // Find patient by ID
-//        Patient patient = patientRepository.findById(patientId)
-//                .orElseThrow(() -> new ResourceNotFoundException("Patient",
-//                        "id",
-//                        patientId));
-//
-//        // Assign patient to appointment
-//        appointment.setPatient(patient);
-//
-//        // Save appointment
-//        return appointmentRepository.save(appointment);
-//    }
 
     @Override
     public boolean addQuery(PatientQueryBody patientQueryBody) {
         try {
             System.out.println(patientQueryBody.getPatinet_id());
             Patient patient = patientRepository.findById(patientQueryBody.getPatinet_id()).get();
-            Query query = new Query(patientQueryBody.getSubject(),
+            Query query = new Query("requested",patientQueryBody.getSubject(),
                     patientQueryBody.getQuery(),
                     "");
             query.setPatient(patient);
+
             queryRepository.save(query);
             return true;
         }catch (Exception e){
@@ -109,7 +101,7 @@ public class PatientServiceImpl implements PatientService {
             AppointmentStatus status = AppointmentStatus.REQUESTED;
 
             Appointment appointment=new Appointment( bookAppointmentBody.getDate(),status);
-
+           appointment.setPatient_name(patient.getFirstName());
            appointment.setPatient(patient);
            appointment.setDoctor(doctor);
            appointmentRepository.save(appointment);
@@ -138,6 +130,24 @@ public class PatientServiceImpl implements PatientService {
            return Collections.emptyList();
        }
 
+    }
+
+
+
+    @Override
+    public List<Prescription> getPrescription(Long id) {
+        return prescriptionRepository.findByAppointmentId(id);
+    }
+
+    @Override
+    public List<Appointment> getApproved(Long id) {
+        AppointmentStatus status = AppointmentStatus.valueOf("APPROVED");
+        return  appointmentRepository.findByPatient_IdAndStatus(id,status);
+    }
+
+    @Override
+    public List<Treatement> getTreatment(Long id) {
+        return treatmentRepository.findByAppointmentId(id);
     }
 
 

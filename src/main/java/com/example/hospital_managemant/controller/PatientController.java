@@ -4,6 +4,8 @@ import com.example.hospital_managemant.DRO.BookAppointmentBody;
 import com.example.hospital_managemant.DRO.PatientQueryBody;
 import com.example.hospital_managemant.entity.Appointment;
 import com.example.hospital_managemant.entity.Patient;
+import com.example.hospital_managemant.entity.Prescription;
+import com.example.hospital_managemant.entity.Treatement;
 import com.example.hospital_managemant.service.PatientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -27,10 +29,10 @@ public class PatientController {
         else return ResponseEntity.badRequest().body("not able to query try after some time");
     }
     @PostMapping("/register")
-    public ResponseEntity<String> registerPatient(@RequestBody Patient patient) {
+    public Patient registerPatient(@RequestBody Patient patient) {
 
-        patientService.registerPatient(patient);
-        return ResponseEntity.ok("Patient registered successfully");
+        return patientService.registerPatient(patient);
+
     }
 
 
@@ -53,9 +55,22 @@ public class PatientController {
         return patientService.bookAppointment(appointment);
     }
 
+    @GetMapping("getpres/{id}")
+    public List<Prescription> getPrescription(@PathVariable Long id){
+        return patientService.getPrescription(id);
+    }
+    @GetMapping("gettreat/{id}")
+    public List<Treatement>getTreatment(@PathVariable Long id){
+        return patientService.getTreatment(id);
+    }
 @GetMapping("see/appointments/{id}")
     public List<Appointment> getAppointment(@PathVariable Long id){
 
         return patientService.getAppointment(id);
 }
+@GetMapping("see/appointments/approve/{id}")
+    public List<Appointment> getAppoinments(@PathVariable Long id){
+        return patientService.getApproved(id);
+}
+
 }

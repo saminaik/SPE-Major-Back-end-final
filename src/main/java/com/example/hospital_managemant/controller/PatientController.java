@@ -2,10 +2,7 @@ package com.example.hospital_managemant.controller;
 
 import com.example.hospital_managemant.DRO.BookAppointmentBody;
 import com.example.hospital_managemant.DRO.PatientQueryBody;
-import com.example.hospital_managemant.entity.Appointment;
-import com.example.hospital_managemant.entity.Patient;
-import com.example.hospital_managemant.entity.Prescription;
-import com.example.hospital_managemant.entity.Treatement;
+import com.example.hospital_managemant.entity.*;
 import com.example.hospital_managemant.service.PatientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -35,6 +32,10 @@ public class PatientController {
 
     }
 
+ @GetMapping("/get/quiries/{id}")
+ public List<Query> getQuir(@PathVariable Long id) {
+       return patientService.getQuir(id);
+ }
 
 //    @GetMapping("/appointments/book")
 //    public ResponseEntity<?>  bookAppointment(@RequestBody BookAppointmentBody bookAppointmentBody){

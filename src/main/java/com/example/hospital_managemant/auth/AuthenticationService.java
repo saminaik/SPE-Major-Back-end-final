@@ -66,15 +66,16 @@ public class AuthenticationService {
              id=user.get().getId();
              System.out.println(user.get());
              jwtToken = jwtService.generateToken(user.get());
+             String str=user.get().getEmail();
+             if(str.equals("admin@gmail.com"))
+                 role="ADMIN";
+             else
              role = "PATIENT";
          } else if (doctor.isPresent()) {
              id=doctor.get().getId();
              System.out.println(doctor.get());
              jwtToken = jwtService.generateToken(doctor.get());
-             String str=doctor.get().getEmail();
-             if(str.equals("doctor1@gmail.com"))
-                 role="ADMIN";
-                         else
+
              role = "DOCTOR";
          } else if (admin.isPresent()) {
              System.out.println(admin.get());

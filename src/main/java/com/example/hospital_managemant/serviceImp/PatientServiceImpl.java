@@ -150,5 +150,10 @@ public class PatientServiceImpl implements PatientService {
         return treatmentRepository.findByAppointmentId(id);
     }
 
+    @Override
+    public List<Query> getQuir(Long id) {
+        return queryRepository.findByPatient_Id(id);
+    }
+
 
 }

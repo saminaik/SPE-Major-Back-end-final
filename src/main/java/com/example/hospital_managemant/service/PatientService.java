@@ -2,14 +2,10 @@ package com.example.hospital_managemant.service;
 
 import com.example.hospital_managemant.DRO.BookAppointmentBody;
 import com.example.hospital_managemant.DRO.PatientQueryBody;
-import com.example.hospital_managemant.entity.Appointment;
-import com.example.hospital_managemant.entity.Patient;
-import com.example.hospital_managemant.entity.Prescription;
-import com.example.hospital_managemant.entity.Treatement;
+import com.example.hospital_managemant.entity.*;
 import org.springframework.http.ResponseEntity;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface PatientService {
    Patient registerPatient(Patient patient);
@@ -33,4 +29,6 @@ public interface PatientService {
     List<Appointment> getApproved(Long id);
 
     List<Treatement> getTreatment(Long id);
+
+ List<Query> getQuir(Long id);
 }

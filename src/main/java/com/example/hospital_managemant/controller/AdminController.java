@@ -46,6 +46,7 @@ public class AdminController {
         return adminService.getquery();
   }
 
+
     @PostMapping("/doctor")
     public void addDoctor(@RequestBody Doctor doctor) {
         doctorService.addDoctor(doctor);

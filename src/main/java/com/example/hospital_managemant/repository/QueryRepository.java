@@ -8,6 +8,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 public interface QueryRepository extends JpaRepository<Query, Long> {
+    @org.springframework.data.jpa.repository.Query("select q from Query q where q.patient.id = ?1")
+    List<Query> findByPatient_Id(Long id);
     @Transactional
     @Modifying
     @org.springframework.data.jpa.repository.Query("update Query q set q.status = ?1 where q.id = ?2")

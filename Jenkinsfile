@@ -8,7 +8,11 @@ pipeline {
                 credentialsId:'githubID'
             }
         }
-    
+           stage('Maven Build and Run Tests'){
+            steps{
+                sh "mvn clean install"
+            }
+        }    
    
      
       

@@ -28,6 +28,23 @@ pipeline {
                 }
             }
         }
+        stage('Ansible Deploy') {
+            steps {
+                withCredentials([usernamePassword(credentialsId: 'dockerhub_id', passwordVariable: 'DOCKERHUB_PASSWORD', usernameVariable: 'DOCKERHUB_USERNAME')]) {
+                    ansiblePlaybook(
+                        installation: 'Ansible',
+                        inventory: 'inventory',
+                        playbook: 'playbook.yml',
+                        colorized: true,
+                        disableHostKeyChecking: true,
+                        extraVars: [
+                            'jenkins_credentials_username': "${DOCKERHUB_USERNAME}",
+                            'jenkins_credentials_password': "${DOCKERHUB_PASSWORD}"
+                        ]
+                    )
+                }
+            }
+            
     }
 }
 

@@ -14,7 +14,11 @@ pipeline {
             }
         }    
    
-     
+      stage('Image Build'){
+            steps{
+                sh "docker build -t saminaik/spe_back-end:latest ."
+            }
+        }
       
         
     

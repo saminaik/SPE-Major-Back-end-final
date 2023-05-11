@@ -9,6 +9,9 @@ import com.example.hospital_managemant.service.DoctorService;
 import com.example.hospital_managemant.service.PatientService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 
 import java.util.List;
 
@@ -18,6 +21,8 @@ import java.util.List;
 @RestController
 @CrossOrigin("http://localhost:3000")
 public class AdminController {
+    private static final Logger logger = LoggerFactory.getLogger(AdminController.class);
+
     private final DoctorService doctorService;
     private final AdminService adminService;
     private final PatientService patientService;
@@ -37,9 +42,10 @@ public class AdminController {
     @PostMapping("/reply-querys/{id}")
     public ResponseEntity<?> replyQ(@RequestBody String replyText,@PathVariable Long id){
         boolean b=adminService.adReply(replyText,id);
-        if(b)
-            return ResponseEntity.ok("Done!");
-        else return ResponseEntity.badRequest().body("not able to post the reponse");
+        if(b){logger.info("Replied Successfully");
+            return ResponseEntity.ok("Done!");}
+        else { logger.error("not able to reply the query");
+            return ResponseEntity.badRequest().body("not able to post the reponse");}
     }
   @GetMapping("/quries")
   public List<Query> getquery(){

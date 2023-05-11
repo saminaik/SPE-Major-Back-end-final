@@ -7,7 +7,8 @@ import com.example.hospital_managemant.service.PatientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import java.util.List;
 import java.util.Optional;
 
@@ -16,10 +17,15 @@ import java.util.Optional;
 @CrossOrigin("http://localhost:3000")
 
 public class PatientController {
+    private static final Logger logger = LoggerFactory.getLogger(PatientController.class);
+
     @Autowired
     private PatientService patientService;
     @PostMapping("/add-query")
     public ResponseEntity<?> addQuery(@RequestBody PatientQueryBody patientQueryBody){
+
+        logger.info("Adding query with patient id {}", patientQueryBody.getPatinet_id());
+
         boolean b = patientService.addQuery(patientQueryBody);
         if(b)
             return ResponseEntity.ok("Query registered");

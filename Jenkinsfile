@@ -5,7 +5,7 @@
             steps {
                 git(
                     url: 'https://github.com/saminaik/SPE-Major-Back-end-final.git',
-                    branch: 'finalproject',
+                    branch: 'testing',
                     credentialsId: 'githubID'
                 )
             }

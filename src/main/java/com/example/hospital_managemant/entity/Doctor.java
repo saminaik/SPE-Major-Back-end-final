@@ -37,6 +37,7 @@ public class Doctor implements UserDetails {
         this.email = email;
     }
 
+    @Column(unique = true)
     private String email;
     private String password;
     private String name;

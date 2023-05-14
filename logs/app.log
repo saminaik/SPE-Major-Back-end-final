@@ -1,0 +1,2 @@
+2023-05-14 08:36:41 INFO  [c.e.h.controller.PatientController] API: /get/quiries/id, Response state: OK, Request time: 87ms
+2023-05-14 08:36:41 INFO  [c.e.h.controller.PatientController] API: /get/quiries/id, Response state: OK, Request time: 7ms

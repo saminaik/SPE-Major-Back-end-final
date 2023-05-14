@@ -8,15 +8,15 @@ import com.example.hospital_managemant.service.DoctorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-//import org.slf4j.Logger;
-//import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
 @RequestMapping("api/doctor")
 @RestController
 public class DoctorController {
- //   private static final Logger logger = LoggerFactory.getLogger(DoctorController.class);
+   private static final Logger logger = LoggerFactory.getLogger(DoctorController.class);
 
     @Autowired
     private final DoctorService doctorService;
@@ -37,18 +37,21 @@ public class DoctorController {
 //    }
     @GetMapping("/appointments/{id}")
     public List<Appointment> getAllAppointments(@PathVariable Long id)
-    {
+    {   long startTime = System.currentTimeMillis();
         List<Appointment> appointments = doctorService.getAllAppointments(id);
+        long endTime = System.currentTimeMillis(); // record end time
+        long requestTime = endTime - startTime; // calculate request time
+
         System.out.println(appointments);
         if (appointments.size()==0){
-           // logger.warn("No appointments found.");
+            logger.info("API: /appointments/id, Response state: OK, Request time: " + requestTime + "ms");
             return null;}
-        //logger.info("Retrieved  appointments.", appointments.size());
+        logger.info("API: /appointments/id, Response state: error, Request time: " + requestTime + "ms");
         return appointments;
     }
     @PostMapping("/treatment")
     public ResponseEntity<?> setTreatment(@RequestBody Treatement treat){
-        //logger.info("Received request to set treatment for patient");
+
 
         return doctorService.setTreatment(treat);
     }

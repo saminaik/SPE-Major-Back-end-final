@@ -22,9 +22,7 @@ public class Query {
     @JsonBackReference
     private Patient patient;
 
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "admin_id", nullable = false)
-//    private Admin admin;
+
 
     private String subject;
    private String status;

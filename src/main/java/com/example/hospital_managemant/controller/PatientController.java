@@ -72,7 +72,9 @@ public class PatientController {
 //        if (b)
 //            return ResponseEntity.ok(appointment);
 //        return ResponseEntity.badRequest().body("already requested appointment");
-
+logger.info("Adding query with patient id ");
+        logger.info("Adding query with patient id ");
+        logger.info("Adding query with patient id ");
         return patientService.bookAppointment(appointment);
     }
 

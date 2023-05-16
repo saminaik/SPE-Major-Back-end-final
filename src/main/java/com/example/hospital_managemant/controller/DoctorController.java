@@ -58,7 +58,6 @@ public class DoctorController {
     @PostMapping("/pres")
     public ResponseEntity<?> setPrescription(@RequestBody Prescription prescription)
     {
-        //logger.info("Received request to set prescription for Appointment with id {}.", prescription.getAppointmentId());
 
         return doctorService.setPriscription(prescription);
     }
